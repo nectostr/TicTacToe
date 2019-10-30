@@ -34,30 +34,30 @@ class CrossGame:
         retry_count = 5
         user_inp = "none"
         while user_inp not in self.free_places:
-            user_inp = input(f"Введите число от 1 до {self.field_size}:\n")
+            user_inp = input(f"Enter number from 1 to {self.field_size}:\n")
             while not user_inp.isdigit():
-                print("Комон, это не число")
-                user_inp = input(f"Введите число от 1 до {self.field_size}:\n")
+                print("Comon, it is not a number")
+                user_inp = input(f"Enter number from 1 to  {self.field_size}:\n")
                 retry_count -= 1
                 if retry_count < 0:
-                    print("Слишком много дурацких попыток, выберу вам число сам")
+                    print("Too much stupid tries, i'll choose by myself")
                     user_inp = np.random.choice(list(self.free_places))
                     return user_inp
 
             user_inp = int(user_inp)
             if retry_count < 0:
-                print("Слишком много дурацких попыток, выберу вам число сам")
+                print("Too much stupid tries, i'll choose by myself")
                 user_inp = np.random.choice(list(self.free_places))
                 return user_inp
             if user_inp > self.field_size:
-                print(f"Слишком большое число, наиближайшее возможное - {max(self.free_places)}")
+                print(f"Number is too large, closest - {max(self.free_places)}")
             elif user_inp < 1:
-                print(f"Слишком маленькое число, наиближайшее возможное - {min(self.free_places)}")
+                print(f"Number is too small, closest - {min(self.free_places)}")
         return user_inp
 
 
     def _step(self, whom="x"):
-        print(f"ход игрока {whom}")
+        print(f"It is {whom} move now")
         # print(print_field())
         print(self.field)
         inp = self._get_data()
@@ -65,24 +65,21 @@ class CrossGame:
         self.free_places = self.free_places - {inp}
 
 
-    def _win(self, whom):
-        print(f"{whom} wins, great")
-
-
     def _check_win(self, whom):
         for i in self.field:
             if all(i == whom):#.sum() >= self.field_length:
-                self._win(whom)
+            if all(i == whom):#.sum() >= self.field_length:
+                print(f"{whom} wins, great")
                 return True
         for i in self.field.T:
             if all(i == whom):# >= self.field_length:
-                self._win(whom)
+                print(f"{whom} wins, great")
                 return True
         if all(self.field.diagonal() == whom):# >= self.field_length:
-            self._win(whom)
+            print(f"{whom} wins, great")
             return True
         if all(np.diag(np.fliplr(self.field)) == whom):# >= self.field_length:
-            self._win(whom)
+            print(f"{whom} wins, great")
             return True
         return False
 
@@ -92,13 +89,13 @@ class CrossGame:
             self._step("x")
             self.win = self._check_win("x")
             if not self.free_places and not self.win:
-                print("Ничья")
+                print("No one wins")
                 break
             if not self.win:
                 self._step("o")
                 self.win = self._check_win("o")
                 if not self.free_places and not self.win:
-                    print("Ничья")
+                    print("No one wins")
                     break
 
 
