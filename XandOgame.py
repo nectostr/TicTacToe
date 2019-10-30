@@ -68,7 +68,6 @@ class CrossGame:
     def _check_win(self, whom):
         for i in self.field:
             if all(i == whom):#.sum() >= self.field_length:
-            if all(i == whom):#.sum() >= self.field_length:
                 print(f"{whom} wins, great")
                 return True
         for i in self.field.T:
